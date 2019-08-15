@@ -26,76 +26,76 @@ let dbConn = mysql.createConnection({
 dbConn.connect();
 
 
-// Retrieve all users 
-app.get('/users', function (req, res) {
-  dbConn.query('SELECT * FROM users', function (error, results, fields) {
+// Retrieve all products
+app.get('/productos', function (req, res) {
+  dbConn.query('SELECT * FROM productos', function (error, results, fields) {
     if (error) throw error;
-    return res.send({ error: false, data: results, message: 'users list.' });
+    return res.send({ error: false, data: results, message: 'Listado de productos' });
   });
 });
 
 
-// Retrieve user with id 
-app.get('/user/:id', function (req, res) {
+// Retrieve Product with id
+app.get('/productos/:id', function (req, res) {
 
-  let user_id = req.params.id;
+  let productoId = req.params.id;
 
-  if (!user_id) {
-    return res.status(400).send({ error: true, message: 'Please provide user_id' });
+  if (!productoId) {
+    return res.status(400).send({ error: true, message: 'Please provide a productoId' });
   }
 
-  dbConn.query('SELECT * FROM users where id=?', user_id, function (error, results, fields) {
+  dbConn.query('SELECT * FROM productos WHERE id=?', productoId, function (error, results, fields) {
     if (error) throw error;
-    return res.send({ error: false, data: results[0], message: 'users list.' });
+    return res.send({ error: false, data: results[0], message: 'productos list.' });
   });
 
 });
 
 
-// Add a new user  
-app.post('/user', function (req, res) {
+// Add a new product
+app.post('/productos', function (req, res) {
 
-  let user = req.body.user;
+  let producto = req.body.producto;
 
-  if (!user) {
-    return res.status(400).send({ error:true, message: 'Please provide user' });
+  if (!producto) {
+    return res.status(400).send({ error:true, message: 'Please provide product' });
   }
 
-  dbConn.query("INSERT INTO users SET ? ", { user: user }, function (error, results, fields) {
+  dbConn.query("INSERT INTO productos SET ? ", { producto: producto }, function (error, results, fields) {
     if (error) throw error;
-    return res.send({ error: false, data: results, message: 'New user has been created successfully.' });
+    return res.send({ error: false, data: results, message: 'New producto has been created successfully.' });
   });
 });
 
 
-//  Update user with id
-app.put('/user', function (req, res) {
+//  Update producto with id
+app.put('/productos', function (req, res) {
 
-  let user_id = req.body.user_id;
-  let user = req.body.user;
+  let productoId = req.body.productoId;
+  let producto = req.body.producto;
 
-  if (!user_id || !user) {
-    return res.status(400).send({ error: user, message: 'Please provide user and user_id' });
+  if (!productoId || !producto) {
+    return res.status(400).send({ error: producto, message: 'Please provide productor and productoId' });
   }
 
-  dbConn.query("UPDATE users SET user = ? WHERE id = ?", [user, user_id], function (error, results, fields) {
+  dbConn.query("UPDATE productos SET producto = ? WHERE id = ?", [producto, producto_id], function (error, results, fields) {
     if (error) throw error;
-    return res.send({ error: false, data: results, message: 'user has been updated successfully.' });
+    return res.send({ error: false, data: results, message: 'producto has been updated successfully.' });
   });
 });
 
 
-//  Delete user
-app.delete('/user', function (req, res) {
+//  Delete producto
+app.delete('/productos', function (req, res) {
 
-  let user_id = req.body.user_id;
+  let productoId = req.body.producto_id;
 
-  if (!user_id) {
-    return res.status(400).send({ error: true, message: 'Please provide user_id' });
+  if (!productoId) {
+    return res.status(400).send({ error: true, message: 'Please provide product_id' });
   }
-  dbConn.query('DELETE FROM users WHERE id = ?', [user_id], function (error, results, fields) {
+  dbConn.query('DELETE FROM productos WHERE id = ?', [productoId], function (error, results, fields) {
     if (error) throw error;
-    return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
+    return res.send({ error: false, data: results, message: 'Product has been updated successfully.' });
   });
 });
 
