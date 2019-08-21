@@ -15,11 +15,15 @@ app.get('/', function (req, res) {
 });
 // connection configurations
 let dbConn = mysql.createConnection({
-  host: 'trabajo-practico.c91cbeurpah9.us-east-1.rds.amazonaws.com',
-  user: 'admin',
-  password: '12345678',
+  // host: 'trabajo-practico.c91cbeurpah9.us-east-1.rds.amazonaws.com',
+  // user: 'admin',
+  // password: '12345678',
+  // port: 3306
+  host: '127.0.0.1',
+  user: 'root',
+  password: 'l3tfl0w!',
   database: 'trabajo-practico',
-  port: 3306
+  port: 3307
 });
 
 // connect to database
@@ -36,15 +40,15 @@ app.get('/productos', function (req, res) {
 
 
 // Retrieve Product with id
-app.get('/productos/:id', function (req, res) {
+app.get('/productos/:sku', function (req, res) {
 
-  let productoId = req.params.id;
+  let productoSKU = req.params.sku;
 
-  if (!productoId) {
+  if (!productoSKU) {
     return res.status(400).send({ error: true, message: 'Please provide a productoId' });
   }
 
-  dbConn.query('SELECT * FROM productos WHERE id=?', productoId, function (error, results, fields) {
+  dbConn.query('SELECT * FROM productos WHERE sku=?', [productoSKU], function (error, results, fields) {
     if (error) throw error;
     return res.send({ error: false, data: results[0], message: 'productos list.' });
   });
@@ -61,7 +65,7 @@ app.post('/productos', function (req, res) {
     return res.status(400).send({ error:true, message: 'Please provide product' });
   }
 
-  dbConn.query("INSERT INTO productos SET ? ", { producto: producto }, function (error, results, fields) {
+  dbConn.query("INSERT INTO productos SET ? ", { ...producto }, function (error, results, fields) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: 'New producto has been created successfully.' });
   });
@@ -69,16 +73,16 @@ app.post('/productos', function (req, res) {
 
 
 //  Update producto with id
-app.put('/productos', function (req, res) {
+app.put('/productos/:sku', function (req, res) {
 
-  let productoId = req.body.productoId;
+  let productoSKU = req.params.sku;
   let producto = req.body.producto;
 
-  if (!productoId || !producto) {
-    return res.status(400).send({ error: producto, message: 'Please provide productor and productoId' });
+  if (!productoSKU || !producto) {
+    return res.status(400).send({ error: producto, message: 'Please provide productor and productoSKU' });
   }
 
-  dbConn.query("UPDATE productos SET producto = ? WHERE id = ?", [producto, producto_id], function (error, results, fields) {
+  dbConn.query("UPDATE productos SET ? WHERE sku = ? ", [{...producto}, productoSKU], function (error, results, fields) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: 'producto has been updated successfully.' });
   });
@@ -86,14 +90,14 @@ app.put('/productos', function (req, res) {
 
 
 //  Delete producto
-app.delete('/productos', function (req, res) {
+app.delete('/productos/:sku', function (req, res) {
 
-  let productoId = req.body.producto_id;
+  let productoSKU = req.params.sku;
 
-  if (!productoId) {
-    return res.status(400).send({ error: true, message: 'Please provide product_id' });
+  if (!productoSKU) {
+    return res.status(400).send({ error: true, message: 'Please provide productoSKU' });
   }
-  dbConn.query('DELETE FROM productos WHERE id = ?', [productoId], function (error, results, fields) {
+  dbConn.query('DELETE FROM productos WHERE sku = ?', [productoSKU], function (error, results, fields) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: 'Product has been updated successfully.' });
   });
