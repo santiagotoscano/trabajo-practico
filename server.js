@@ -19,7 +19,7 @@ let dbConn = mysql.createConnection({
   user: 'root',
   password: 'lokiloki',
   database: 'trabajo-practico',
-  port: 3307
+  port: 3306
 });
 
 // connect to database
