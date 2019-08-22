@@ -15,13 +15,9 @@ app.get('/', function (req, res) {
 });
 // connection configurations
 let dbConn = mysql.createConnection({
-  // host: 'trabajo-practico.c91cbeurpah9.us-east-1.rds.amazonaws.com',
-  // user: 'admin',
-  // password: '12345678',
-  // port: 3306
   host: '127.0.0.1',
   user: 'root',
-  password: 'l3tfl0w!',
+  password: 'lokiloki',
   database: 'trabajo-practico',
   port: 3307
 });
