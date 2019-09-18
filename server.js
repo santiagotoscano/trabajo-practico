@@ -109,7 +109,10 @@ app.post('/ML-WEBHOOK', function (req, res) {
 
   let meliObject = new meli.Meli(4288953061163822, 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
   meliObject.refreshAccessToken(() => {
-    request(`https://api.mercadolibre.com${req.body.resource}`, {method: "GET", json: true}, (err, res, body) => console.log(body))
+    console.log('caca')
+    /*request(`https://api.mercadolibre.com${req.body.resource}`, {method: "GET", json: true}, (err, res, body) => {
+
+    })*/
   });
 
   return res.send({ error: false, message: 'hola' });
