@@ -109,9 +109,9 @@ app.post('/ML-WEBHOOK', function (req, res) {
   let meliObject = new meli.Meli(4288953061163822, 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
   meliObject.refreshAccessToken(() => console.log('done'))
 
-  console.log(req)
+  console.log(req, meliObject)
 
-  return res.send({ error: false, message: req });
+  return res.send({ error: false, message: 'hola' });
 });
 
 // set port
