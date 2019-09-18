@@ -3,6 +3,7 @@ let app = express();
 let bodyParser = require('body-parser');
 let mysql = require('mysql');
 let cors = require('cors')
+let meli = require('mercadolibre')
 
 app.use(cors())
 app.options('*', cors())
@@ -101,6 +102,16 @@ app.delete('/productos/:sku', function (req, res) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: 'Product has been updated successfully.' });
   });
+});
+
+app.post('/ML-WEBHOOK', function (req, res) {
+
+  let meliObject = new meli.Meli(4288953061163822, 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
+  meliObject.refreshAccessToken(() => console.log('done'))
+
+  console.log(req)
+
+  return res.send({ error: false, message: req });
 });
 
 // set port
