@@ -122,12 +122,6 @@ app.post("/ML-WEBHOOK", (req,res) => {
           stock = results[0].stock
         }
 
-        let option = {
-          uri: basePath + "/answers?access_token=" + token,
-          method: "POST",
-          json: true,
-        }
-
         meliObject.post('/answers', {'question_id': res.id, 'text': `Hay ${stock} unidades en stock`}, [], () => {
           console.log('done')
         });
