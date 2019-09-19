@@ -105,7 +105,7 @@ app.delete('/productos/:sku', function (req, res) {
   });
 });
 
-app.post('/ML-WEBHOOK', function (req, res) {
+/*app.post('/ML-WEBHOOK', function (req, res) {
 
   let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
 
@@ -117,13 +117,13 @@ app.post('/ML-WEBHOOK', function (req, res) {
 
 
   return res.send();
-});
+});*/
 
 
 
-/*
+
 const basePath = "https://api.mercadolibre.com";
-const token="APP_USR-4288953061163822-091902-d5bdaae03b3f190667380b31591b31e9-60708402";
+const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-60708402";
 
 
 
@@ -145,7 +145,7 @@ app.post("/ML-WEBHOOK", (req,res) => {
 
     res.send();
   })
-})*/
+})
 
 
 // set port
