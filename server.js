@@ -108,7 +108,7 @@ app.delete('/productos/:sku', function (req, res) {
 
 
 
-app.post("/ML-WEBHOOK", (req,res) => {
+app.post("/ML-WEBHOOK", (req, response) => {
 
   let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
 
@@ -125,14 +125,13 @@ app.post("/ML-WEBHOOK", (req,res) => {
 
         console.log(res.id, res.item_id)
 
-        meliObject.post('/answers/', {question_id: res.id, text: `Hay ${stock} unidades en stock`}, () => {
-          console.log('done')
+        meliObject.post('/answers', {question_id: res.id, text: `Hay ${stock} unidades en stock`}, () => {
+          response.send();
         });
       });
     });
   });
 
-  res.send();
 });
 
 
