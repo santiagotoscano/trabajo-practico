@@ -105,30 +105,18 @@ app.delete('/productos/:sku', function (req, res) {
   });
 });
 
-/*app.post('/ML-WEBHOOK', function (req, res) {
-
-  let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
-
-  meliObject.get(req.body.resource, (err, res) => {
-    meliObject.post('/answers', {question_id: res.id, text: `Respuesta de pregunta ${res.text}`}, (err, res) => {
-      console.log(res)
-    })
-  });
-
-
-  return res.send();
-});*/
-
-
-
-
 const basePath = "https://api.mercadolibre.com";
 const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-60708402";
 
-
-
 app.post("/ML-WEBHOOK", (req,res) => {
 
+  let sku = req.body.resource.split(',')[1];
+  let stock;
+
+  dbConn.query('SELECT * FROM productos WHERE sku=?', [sku], function (error, results, fields) {
+    if (error) throw error;
+    return stock = results[0] ? results[0].stock : 0;
+  });
 
   request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
 
@@ -136,17 +124,14 @@ app.post("/ML-WEBHOOK", (req,res) => {
       uri: basePath + "/answers?access_token=" + token,
       method: "POST",
       json: true,
-      body: {'question_id': body.id, 'text': "Respuesta de pregunta " + body.text}
+      body: {'question_id': body.id, 'text': stock > 0 ? 'Hay stock' : 'No hay stock'}
     }
 
-    request(option, function (error, response, body) {
-      console.log(response);
-    })
+    request(option, function (error, response, body) {})
 
     res.send();
   })
-})
-
+});
 
 // set port
 app.listen(5000, function () {
