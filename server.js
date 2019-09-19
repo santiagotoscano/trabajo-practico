@@ -108,7 +108,7 @@ app.delete('/productos/:sku', function (req, res) {
 
 
 
-app.post("/ML-WEBHOOK", (req, response) => {
+/*app.post("/ML-WEBHOOK", (req, response) => {
 
   let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
 
@@ -140,39 +140,48 @@ app.post("/ML-WEBHOOK", (req, response) => {
       });
     });
   })
-});
+});*/
 
 
 
-/*app.post("/ML-WEBHOOK", (req,res) => {
+app.post("/ML-WEBHOOK", (req,res) => {
 
   const basePath = "https://api.mercadolibre.com";
-  const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-60708402";
 
-  request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
+  request({
+    uri: `${basePath}/oauth/token?grant_type=client_credentials&client_id=353126405683468&client_secret=nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ`,
+    method: "POST",
+    json: true,
+  }, function (error, response, body) {
+    let token = body.access_token
+    request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
 
-    let stock = 0;
+      let stock = 0;
 
-    dbConn.query('SELECT * FROM productos WHERE sku=?', [body.item_id], function (error, results, fields) {
-      if (error) throw error;
+      dbConn.query('SELECT * FROM productos WHERE sku=?', [body.item_id], function (error, results, fields) {
+        if (error) throw error;
 
-      if (results[0]) {
-        stock = results[0].stock
-      }
+        if (results[0]) {
+          stock = results[0].stock
+        }
 
-      let option = {
-        uri: basePath + "/answers?access_token=" + token,
-        method: "POST",
-        json: true,
-        body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
-      }
+        request({
+          uri: basePath + "/answers?access_token=" + token,
+          method: "POST",
+          json: true,
+          body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
+        }, function (error, response, body) {
 
-      request(option, function (error, response, body) {})
+        })
 
-      res.send();
-    });
+        res.send();
+      });
+    })
+
   })
-});*/
+
+
+});
 
 // set port
 app.listen(5000, function () {
