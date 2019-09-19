@@ -105,10 +105,47 @@ app.delete('/productos/:sku', function (req, res) {
   });
 });
 
-const basePath = "https://api.mercadolibre.com";
-const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-60708402";
+
+
 
 app.post("/ML-WEBHOOK", (req,res) => {
+
+  let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
+
+  meliObject.refreshAccessToken(() => {
+    meliObject.get(req.body.resource, (err, res) => {
+      console.log(res)
+    });
+  });
+
+  let stock = 0;
+  dbConn.query('SELECT * FROM productos WHERE sku=?', [body.item_id], function (error, results, fields) {
+    if (error) throw error;
+
+    if (results[0]) {
+      stock = results[0].stock
+    }
+
+    let option = {
+      uri: basePath + "/answers?access_token=" + token,
+      method: "POST",
+      json: true,
+      body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
+    }
+
+    request(option, function (error, response, body) {})
+
+    res.send();
+  });
+
+});
+
+
+
+/*app.post("/ML-WEBHOOK", (req,res) => {
+
+  const basePath = "https://api.mercadolibre.com";
+  const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-60708402";
 
   request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
 
@@ -133,7 +170,7 @@ app.post("/ML-WEBHOOK", (req,res) => {
       res.send();
     });
   })
-});
+});*/
 
 // set port
 app.listen(5000, function () {
