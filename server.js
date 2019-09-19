@@ -110,7 +110,7 @@ const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-607
 
 app.post("/ML-WEBHOOK", (req,res) => {
 
-  let sku = req.body.resource.split(',')[1];
+  let sku = req.body.resource.split('/')[1];
 
   console.log(sku)
   let stock;
