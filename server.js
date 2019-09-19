@@ -114,16 +114,15 @@ app.post("/ML-WEBHOOK", (req,res) => {
 
   meliObject.refreshAccessToken(() => {
     meliObject.get(req.body.resource, (err, res) => {
-      console.log(res)
       let stock = 0;
       dbConn.query('SELECT * FROM productos WHERE sku=?', [res.item_id], function (error, results, fields) {
         if (error) throw error;
-        console.log(results)
+
         if (results[0]) {
           stock = results[0].stock
         }
 
-        meliObject.post('/answers', {'question_id': res.id, 'text': `Hay ${stock} unidades en stock`}, [], () => {
+        meliObject.post('/answers', {'question_id': res.id, 'text': `Hay ${stock} unidades en stock`}, () => {
           console.log('done')
         });
 
