@@ -130,9 +130,9 @@ const token="APP_USR-4288953061163822-091902-d5bdaae03b3f190667380b31591b31e9-60
 
 app.post("/ML-WEBHOOK", (req,res) => {
 
-  console.log(req.body);
+
   request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
-    console.log(body);
+
     let option = {
       uri: basePath + "/answers?access_token=" + token,
       method: "POST",
@@ -143,8 +143,9 @@ app.post("/ML-WEBHOOK", (req,res) => {
     request(option, function (error, response, body) {
       console.log(response);
     })
+
     res.send();
-    })
+  })
 })
 // set port
 app.listen(5000, function () {
