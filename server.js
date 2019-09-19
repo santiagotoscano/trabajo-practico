@@ -109,15 +109,10 @@ app.post('/ML-WEBHOOK', function (req, res) {
 
   let meliObject = new meli.Meli('4288953061163822', 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
 
-  console.log(req.body)
-
-
   meliObject.get(req.body.resource, (err, res) => {
-
-    console.log(res)
+    console.log(res.body)
     meliObject.post('/answers', {question_id: res.body.id, text: `Respuesta de pregunta ${res.body.text}`}, (err, res) => {
 
-      console.log(res.body)
     })
   });
 
