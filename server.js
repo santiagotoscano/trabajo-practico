@@ -111,18 +111,16 @@ app.post('/ML-WEBHOOK', function (req, res) {
 
   console.log(req.body)
 
-  meliObject.refreshAccessToken((err, res) => {
+
+  meliObject.get(req.body.resource, (err, res) => {
+
     console.log(res)
-    meliObject.get(req.body.resource, (err, res) => {
+    meliObject.post('/answers', {question_id: res.body.id, text: `Respuesta de pregunta ${res.body.text}`}, (err, res) => {
 
-      console.log(res)
-      meliObject.post('/answers', {question_id: res.body.id, text: `Respuesta de pregunta ${res.body.text}`}, (err, res) => {
-
-        console.log(res.body)
-      })
-    });
-
+      console.log(res.body)
+    })
   });
+
 
   return res.send({ error: false, message: 'hola' });
 });
