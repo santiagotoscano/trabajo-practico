@@ -107,43 +107,6 @@ app.delete('/productos/:sku', function (req, res) {
 
 
 
-
-/*app.post("/ML-WEBHOOK", (req, response) => {
-
-  let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
-
-  let code = meliObject.getAuthURL("https://google.com")
-
-  console.log(code)
-
-  meliObject.authorize(code, 'http://ec2-54-156-68-112.compute-1.amazonaws.com:5000/ML-WEBHOOK', (err, res) => {
-    console.log(res)
-
-    meliObject.refreshAccessToken((err, res) => {
-
-      console.log(res)
-
-      meliObject.get(req.body.resource, (err, res) => {
-        let stock = 0;
-        dbConn.query('SELECT * FROM productos WHERE sku=?', [res.item_id], function (error, results, fields) {
-          if (error) throw error;
-
-          if (results[0]) {
-            stock = results[0].stock
-          }
-
-          meliObject.post('/answers', {"question_id": res.id, "text": "hola"}, (err, res) => {
-            console.log(res)
-            response.send();
-          });
-        });
-      });
-    });
-  })
-});*/
-
-
-
 app.post("/ML-WEBHOOK", (req,res) => {
 
   const basePath = "https://api.mercadolibre.com";
@@ -153,6 +116,7 @@ app.post("/ML-WEBHOOK", (req,res) => {
     method: "POST",
     json: true,
   }, function (error, response, body) {
+
     let token = body.access_token
     request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
 
@@ -170,17 +134,11 @@ app.post("/ML-WEBHOOK", (req,res) => {
           method: "POST",
           json: true,
           body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
-        }, function (error, response, body) {
-
-        })
-
+        }, function (error, response, body) {});
         res.send();
       });
     })
-
   })
-
-
 });
 
 // set port
