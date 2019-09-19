@@ -114,10 +114,11 @@ app.post("/ML-WEBHOOK", (req,res) => {
 
   meliObject.refreshAccessToken(() => {
     meliObject.get(req.body.resource, (err, res) => {
+      console.log(res)
       let stock = 0;
       dbConn.query('SELECT * FROM productos WHERE sku=?', [res.item_id], function (error, results, fields) {
         if (error) throw error;
-
+        console.log(results)
         if (results[0]) {
           stock = results[0].stock
         }
@@ -126,11 +127,11 @@ app.post("/ML-WEBHOOK", (req,res) => {
           console.log('done')
         });
 
-        res.send();
       });
     });
   });
 
+  res.send();
 });
 
 
