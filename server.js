@@ -111,7 +111,8 @@ app.post('/ML-WEBHOOK', function (req, res) {
 
   console.log(req.body)
 
-  meliObject.refreshAccessToken(() => {
+  meliObject.refreshAccessToken((err, res) => {
+    console.log(res)
     meliObject.get(req.body.resource, (err, res) => {
 
       console.log(res)
