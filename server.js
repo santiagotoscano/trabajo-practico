@@ -107,7 +107,7 @@ app.delete('/productos/:sku', function (req, res) {
 
 app.post('/ML-WEBHOOK', function (req, res) {
 
-  let meliObject = new meli.Meli(4288953061163822, 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
+  let meliObject = new meli.Meli('4288953061163822', 'o79fq80g3NXuS1hiPUUs17zToROdeou2');
 
   console.log(req.body)
 
@@ -122,7 +122,7 @@ app.post('/ML-WEBHOOK', function (req, res) {
   });
 
 
-  return res.send({ error: false, message: 'hola' });
+  return res.send({});
 });
 
 // set port
