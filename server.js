@@ -114,10 +114,15 @@ app.post("/ML-WEBHOOK", (req, response) => {
 
   let code = meliObject.getAuthURL("https://google.com")
 
+  console.log(code)
+
   meliObject.authorize(code, 'http://ec2-54-156-68-112.compute-1.amazonaws.com:5000/ML-WEBHOOK', (err, res) => {
     console.log(res)
 
-    meliObject.refreshAccessToken(() => {
+    meliObject.refreshAccessToken((err, res) => {
+
+      console.log(res)
+
       meliObject.get(req.body.resource, (err, res) => {
         let stock = 0;
         dbConn.query('SELECT * FROM productos WHERE sku=?', [res.item_id], function (error, results, fields) {
