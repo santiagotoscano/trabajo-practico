@@ -111,10 +111,13 @@ const token="APP_USR-353126405683468-091903-15aa032fa58b6995685e2092ddc1ad33-607
 app.post("/ML-WEBHOOK", (req,res) => {
 
   let sku = req.body.resource.split(',')[1];
+
+  console.log(sku)
   let stock;
 
   dbConn.query('SELECT * FROM productos WHERE sku=?', [sku], function (error, results, fields) {
     if (error) throw error;
+    console.log(results)
     return stock = results[0] ? results[0].stock : 0;
   });
 
