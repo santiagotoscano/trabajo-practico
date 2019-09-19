@@ -113,23 +113,25 @@ app.post("/ML-WEBHOOK", (req,res) => {
   request({uri: basePath + req.body.resource, method: "GET", json: true}, function (error, response, body) {
 
     let stock = 0;
-    console.log(body.item_id, body)
+
     dbConn.query('SELECT * FROM productos WHERE sku=?', [body.item_id], function (error, results, fields) {
       if (error) throw error;
-      console.log(results[0])
-      stock = results[0] ? results[0].stock : 0;
+
+      if (results[0]) {
+        stock = results[0].stock
+      }
+
+      let option = {
+        uri: basePath + "/answers?access_token=" + token,
+        method: "POST",
+        json: true,
+        body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
+      }
+
+      request(option, function (error, response, body) {})
+
+      res.send();
     });
-
-    let option = {
-      uri: basePath + "/answers?access_token=" + token,
-      method: "POST",
-      json: true,
-      body: {'question_id': body.id, 'text': stock > 0 ? 'Hay stock' : 'No hay stock'}
-    }
-
-    request(option, function (error, response, body) {})
-
-    res.send();
   })
 });
 
