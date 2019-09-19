@@ -112,6 +112,8 @@ app.post("/ML-WEBHOOK", (req, response) => {
 
   let meliObject = new meli.Meli(353126405683468, 'nNB591fp6HxhQLrh4Z5Bl8S56z2WexpZ');
 
+  console.log(meliObject.getAuthURL("https://google.com"))
+
   meliObject.refreshAccessToken(() => {
 
     meliObject.get(req.body.resource, (err, res) => {
@@ -122,8 +124,6 @@ app.post("/ML-WEBHOOK", (req, response) => {
         if (results[0]) {
           stock = results[0].stock
         }
-
-        console.log(res.id, res.item_id)
 
         meliObject.post('/answers', {"question_id": res.id, "text": "hola"}, (err, res) => {
           console.log(res)
