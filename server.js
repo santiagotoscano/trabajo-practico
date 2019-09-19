@@ -125,7 +125,8 @@ app.post("/ML-WEBHOOK", (req, response) => {
 
         console.log(res.id, res.item_id)
 
-        meliObject.post('/answers', {question_id: res.id, text: `Hay ${stock} unidades en stock`}, () => {
+        meliObject.post('/answers', {"question_id": res.id, "text": "hola"}, (err, res) => {
+          console.log(res)
           response.send();
         });
       });
