@@ -129,11 +129,13 @@ app.post("/ML-WEBHOOK", (req,res) => {
           stock = results[0].stock
         }
 
+        const text = stock ? `Hay ${stock} unidades en stock` : "No hay stock";
+
         request({
           uri: basePath + "/answers?access_token=" + token,
           method: "POST",
           json: true,
-          body: {'question_id': body.id, 'text': `Hay ${stock} unidades en stock`}
+          body: {'question_id': body.id, 'text': text}
         }, function (error, response, body) {});
         res.send();
       });
